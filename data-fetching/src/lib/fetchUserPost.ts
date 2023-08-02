@@ -1,9 +1,12 @@
 export default async function fetchUserPost(id: number) {
   const res = await fetch(
-    `https://jsonplaceholder.typicode.com/posts?userId=${id}`
+    `https://jsonplaceholder.typicode.com/posts?userId=${id}`,
+    { next: { revalidate: 60 } }
   );
 
-  if (!res.ok) throw new Error("Failed to fetch User Post data");
+  if (!res.ok) {
+    return undefined;
+  }
 
   return res.json();
 }
