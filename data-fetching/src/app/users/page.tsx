@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 export default async function UsersPage() {
   const userData: Promise<User[]> = fetchUserData();
   const users = await userData;
+
   return (
     <section>
       <h2>
