@@ -3,6 +3,8 @@ import fetchUserPost from "@/lib/fetchUserPost";
 import { Metadata } from "next";
 import { Suspense } from "react";
 import PostCard from "./components/PostCard";
+import fetchUserData from "@/lib/fetchUserData";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: {
@@ -10,11 +12,18 @@ type Props = {
   };
 };
 
+// To generate dynamic metadata so the page title is user's name
 export async function generateMetadata({
   params: { userId },
 }: Props): Promise<Metadata> {
   const userData: Promise<User> = fetchUser(userId);
   const user = await userData;
+
+  if (!user) {
+    return {
+      title: "User Not Found",
+    };
+  }
 
   return {
     title: user.name,
@@ -31,6 +40,10 @@ export default async function UserPage({ params: { userId } }: Props) {
 
   const user = await userData;
 
+  if (!user) {
+    return notFound();
+  }
+
   return (
     <>
       <h1>{user.name}</h1>
@@ -45,4 +58,15 @@ export default async function UserPage({ params: { userId } }: Props) {
       </div>
     </>
   );
+}
+
+export async function generateStaticParams() {
+  const allUserData: Promise<User[]> = fetchUserData();
+  const usersData = await allUserData;
+
+  return usersData.map((user) => {
+    return {
+      userId: user.id.toString(),
+    };
+  });
 }
