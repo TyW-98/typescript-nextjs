@@ -15,7 +15,7 @@ export default function Navbar() {
         </h1>
         <div className="flex flex-row justify-center sm:justify-evenly align-middle gap-4 text-white text-3xl lg:text-5xl">
           <Link
-            className="text-white/90 hover:text-orange-400 hover:translate-y-1"
+            className="text-white/90 hover:text-orange-400 "
             href="https://twitter.com/home?"
           >
             <FaTwitter />
